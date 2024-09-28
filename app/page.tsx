@@ -1,4 +1,5 @@
 // pages/index.tsx
+"use client";
 import MathComponent from './components/MathComponent';
 
 const Home = () => {
