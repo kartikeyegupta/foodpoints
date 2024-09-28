@@ -1,4 +1,5 @@
 // components/MathComponent.tsx
+"use client";
 import { useState } from 'react';
 
 const MathComponent = () => {
