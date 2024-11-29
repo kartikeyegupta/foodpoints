@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import GoogleTag from "@/components/ui/googletag"
+import { Head } from 'next/document';
 
 const PLANS = {
   "Plan A": { total: 2953.03, daily: 26.37 },
@@ -70,61 +70,60 @@ export default function FoodPointsCalculator() {
     }
 
     return (
-      <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center space-x-2">
-            <GoogleTag trackingId="G-ZZDL47J2LN" />
-            <Calculator className="w-6 h-6 text-sky-600" />
-            <CardTitle className="text-2xl font-bold text-sky-600">Food Points Calculator</CardTitle>
-          </div>
-          <CardDescription>
-            Calculate your food points balance and daily spending target
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="plan">Select Your Plan</Label>
-            <Select
-              value={selectedPlan}
-              onValueChange={(value) => setSelectedPlan(value as keyof typeof PLANS)}
-            >
-              <SelectTrigger id="plan">
-                <SelectValue placeholder="Choose your dining plan" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(PLANS).map((plan) => (
-                  <SelectItem key={plan} value={plan}>
-                    {plan}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="balance">Current Balance</Label>
-            <Input
-              id="balance"
-              type="number"
-              placeholder="Enter your current balance"
-              value={currentBalance}
-              onChange={(e) => setCurrentBalance(e.target.value)}
-            />
-          </div>
-
-          {selectedPlan && currentBalance && (
-            <div className="mt-6 p-4 rounded-lg bg-sky-100 space-y-2">
-              <p className="font-medium text-sky-900">
-                You are {result.isAhead ? "ahead" : "behind"} by:{" "}
-                <span className="font-bold">${result.difference.toFixed(2)}</span>
-              </p>
-              <p className="text-sky-800">{message}</p>
-              <p className="text-2xl font-bold text-sky-600">
-                ${result.isAhead ? (result.isAheadByHundred ? result.hundredTarget.toFixed(2) : result.dailyTarget.toFixed(2)) : result.twoWeekTarget.toFixed(2)}/day
-              </p>
+        <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
+            <CardHeader className="space-y-1">
+            <div className="flex items-center space-x-2">
+                <Calculator className="w-6 h-6 text-sky-600" />
+                <CardTitle className="text-2xl font-bold text-sky-600">Food Points Calculator</CardTitle>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <CardDescription>
+                Calculate your food points balance and daily spending target
+            </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="plan">Select Your Plan</Label>
+                <Select
+                value={selectedPlan}
+                onValueChange={(value) => setSelectedPlan(value as keyof typeof PLANS)}
+                >
+                <SelectTrigger id="plan">
+                    <SelectValue placeholder="Choose your dining plan" />
+                </SelectTrigger>
+                <SelectContent>
+                    {Object.keys(PLANS).map((plan) => (
+                    <SelectItem key={plan} value={plan}>
+                        {plan}
+                    </SelectItem>
+                    ))}
+                </SelectContent>
+                </Select>
+            </div>
+
+            <div className="space-y-2">
+                <Label htmlFor="balance">Current Balance</Label>
+                <Input
+                id="balance"
+                type="number"
+                placeholder="Enter your current balance"
+                value={currentBalance}
+                onChange={(e) => setCurrentBalance(e.target.value)}
+                />
+            </div>
+
+            {selectedPlan && currentBalance && (
+                <div className="mt-6 p-4 rounded-lg bg-sky-100 space-y-2">
+                <p className="font-medium text-sky-900">
+                    You are {result.isAhead ? "ahead" : "behind"} by:{" "}
+                    <span className="font-bold">${result.difference.toFixed(2)}</span>
+                </p>
+                <p className="text-sky-800">{message}</p>
+                <p className="text-2xl font-bold text-sky-600">
+                    ${result.isAhead ? (result.isAheadByHundred ? result.hundredTarget.toFixed(2) : result.dailyTarget.toFixed(2)) : result.twoWeekTarget.toFixed(2)}/day
+                </p>
+                </div>
+            )}
+            </CardContent>
+        </Card>
     )
 }
