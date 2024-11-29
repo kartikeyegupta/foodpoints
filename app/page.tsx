@@ -31,7 +31,8 @@ export default function FoodPointsCalculator() {
     isAhead: false,
     isAheadByHundred: false,
     remainingDays: 0,
-    daysInTwoWeeks: 14,
+    daysInAWeek: 0,
+    daysInTwoWeeks: 0,
     realDaily: 0,
   })
 
@@ -48,19 +49,21 @@ export default function FoodPointsCalculator() {
     const expectedBalance = Math.max((PLANS[selectedPlan].total - (realDaily * daysFromStart)), 0)
     const actualBalance = parseFloat(currentBalance)
     const difference = actualBalance - expectedBalance
+    const daysInAWeek = Math.min(7, remainingDays)
     const daysInTwoWeeks = Math.min(14, remainingDays)
     const twoWeekEnd = (expectedBalance - (realDaily * daysInTwoWeeks))
     const twoWeekTarget = (actualBalance - twoWeekEnd) / daysInTwoWeeks
 
     setResult({
       difference: Math.abs(difference),
-      dailyTarget: Math.abs(difference) / 7 + realDaily,
-      hundredTarget: Math.abs(difference) / 14 + realDaily,
+      dailyTarget: Math.abs(difference) / daysInAWeek + realDaily,
+      hundredTarget: Math.abs(difference) / daysInTwoWeeks + realDaily,
       twoWeekTarget: Math.max(0, twoWeekTarget),
       isAhead: difference > 0,
       isAheadByHundred: difference > 100,
       remainingDays: remainingDays,
       daysInTwoWeeks: daysInTwoWeeks,
+      daysInAWeek: daysInAWeek,
       realDaily: realDaily,
     })
   }
@@ -71,11 +74,24 @@ export default function FoodPointsCalculator() {
 
   let message;
   if (result.isAhead) {
-    if (result.isAheadByHundred) {
-      message = "You can spend this amount per day until you leave:";
+    if (result.daysInTwoWeeks != 14) {
+      if (result.isAheadByHundred) {
+        message = "You can spend this amount per day until you leave:";
+      } else {
+        if (result.daysInAWeek != 7) {
+          message = "You can spend this amount per day until you leave";
+        } else {
+          message = "You can spend this amount per day for the next week";
+        }
+      }
     } else {
-      message = "You can spend this amount per day for the next week:";
+      if (result.isAheadByHundred) {
+        message = "You can spend this amount per day for the next two weeks:";
+      } else {
+        message = "You can spend this amount per day for the next week:";
+      }
     }
+    
   } else if (result.daysInTwoWeeks != 14) {
     message = "You can only spend this amount per day until you leave to catch up:";
   } else {
