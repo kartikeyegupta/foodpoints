@@ -8,16 +8,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 const PLANS = {
-  "Plan A": { total: 2953.03, daily: 26.37 },
-  "Plan B": { total: 3538.90, daily: 31.60 },
-  "Plan C": { total: 3918.38, daily: 34.99 },
-  "Plan D": { total: 4205.40, daily: 37.55 },
-  "Plan E": { total: 4587.03, daily: 40.96 },
-  "Plan F": { total: 967.50, daily: 12.09 },
-  "Plan I": { total: 1016.95, daily: 12.71 },
-  "Plan J": { total: 2088.73, daily: 18.65 },
-}
-
+    "Plan A": { total: 2953.03, daily: 26.37 },
+    "Plan B": { total: 3538.90, daily: 31.60 },
+    "Plan C": { total: 3918.38, daily: 34.99 },
+    "Plan D": { total: 4205.40, daily: 37.55 },
+    "Plan E": { total: 4587.03, daily: 40.96 },
+    "Plan F": { total: 967.50, daily: 12.09 },
+    "Plan I": { total: 1016.95, daily: 12.71 },
+    "Plan J": { total: 2088.73, daily: 18.65 },
+  }
 export default function FoodPointsCalculator() {
     const [selectedPlan, setSelectedPlan] = useState<keyof typeof PLANS | "">("")
     const [currentBalance, setCurrentBalance] = useState("")
@@ -73,7 +72,7 @@ export default function FoodPointsCalculator() {
             <CardHeader className="space-y-1">
             <div className="flex items-center space-x-2">
                 <Calculator className="w-6 h-6 text-sky-600" />
-                <CardTitle className="text-2xl font-bold text-sky-600">Food Points Calculator</CardTitle>
+                <CardTitle className="text-2xl font-bold text-sky-600">Duke Food Points Calculator</CardTitle>
             </div>
             <CardDescription>
                 Calculate your food points balance and daily spending target
