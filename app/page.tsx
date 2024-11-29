@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { GoogleTag } from "@/components/ui/googletag"
 
 const PLANS = {
   "Plan A": { total: 2953.03, daily: 26.37 },
@@ -72,6 +73,7 @@ export default function FoodPointsCalculator() {
       <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
         <CardHeader className="space-y-1">
           <div className="flex items-center space-x-2">
+            <GoogleTag trackingId="G-ZZDL47J2LN" />
             <Calculator className="w-6 h-6 text-sky-600" />
             <CardTitle className="text-2xl font-bold text-sky-600">Food Points Calculator</CardTitle>
           </div>
