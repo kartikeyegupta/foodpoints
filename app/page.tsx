@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PointsChart } from '@/components/ui/points_chart'
 
 const PLANS = {
   "Plan A": { total: 2953.03, daily: 26.37 },
@@ -134,19 +135,22 @@ export default function FoodPointsCalculator() {
         </div>
 
         {selectedPlan && currentBalance && leavingDate && (
-          <div className="mt-6 p-4 rounded-lg bg-sky-100 space-y-2">
-            <p className="font-medium text-sky-900">
-              You are {result.isAhead ? "ahead" : "behind"} by:{" "}
-              <span className="font-bold">${result.difference.toFixed(2)}</span>
-            </p>
-            <p className="text-sky-800">{message}</p>
-            <p className="text-2xl font-bold text-sky-600">
-              ${result.isAhead ? (result.isAheadByHundred ? ((parseFloat(currentBalance) / result.remainingDays).toFixed(2)) : result.dailyTarget.toFixed(2)) : ((parseFloat(currentBalance) / result.remainingDays).toFixed(2))}/day
-            </p>
-            <p className="text-sm text-sky-700">
-              Remaining days: {result.remainingDays}
-            </p>
-          </div>
+            <>
+                <div className="mt-6 p-4 rounded-lg bg-sky-100 space-y-2">
+                    <p className="font-medium text-sky-900">
+                    You are {result.isAhead ? "ahead" : "behind"} by:{" "}
+                    <span className="font-bold">${result.difference.toFixed(2)}</span>
+                    </p>
+                    <p className="text-sky-800">{message}</p>
+                    <p className="text-2xl font-bold text-sky-600">
+                    ${result.isAhead ? (result.isAheadByHundred ? ((parseFloat(currentBalance) / result.remainingDays).toFixed(2)) : result.dailyTarget.toFixed(2)) : ((parseFloat(currentBalance) / result.remainingDays).toFixed(2))}/day
+                    </p>
+                    <p className="text-sm text-sky-700">
+                    Remaining days: {result.remainingDays}
+                    </p>
+                </div>
+                <PointsChart selectedPlan={selectedPlan} />
+            </>
         )}
       </CardContent>
     </Card>
