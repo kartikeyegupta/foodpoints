@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Head } from 'next/document';
 
 const PLANS = {
   "Plan A": { total: 2953.03, daily: 26.37 },
@@ -46,8 +45,8 @@ export default function FoodPointsCalculator() {
 
       setResult({
         difference: Math.abs(difference),
-        dailyTarget: Math.abs(difference) / 7,
-        hundredTarget: Math.abs(difference) / 14,
+        dailyTarget: Math.abs(difference) / 7 + PLANS[selectedPlan].daily,
+        hundredTarget: Math.abs(difference) / 14 + PLANS[selectedPlan].daily,
         twoWeekTarget: Math.max(0, twoWeekTarget),
         isAhead: difference > 0,
         isAheadByHundred: difference > 100,
@@ -61,9 +60,9 @@ export default function FoodPointsCalculator() {
     let message;
     if (result.isAhead) {
       if (result.isAheadByHundred) {
-        message = "You can spend extra per day for the next two weeks:";
+        message = "You can spend this amount per day the next two weeks:";
       } else {
-        message = "You can spend extra per day for the next week:";
+        message = "You can spend this amount per day for the next week:";
       }
     } else {
       message = "You can only spend this amount per day for the next 2 weeks to catch up:";
