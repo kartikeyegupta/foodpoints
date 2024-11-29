@@ -33,3 +33,35 @@ export default function RootLayout({
     </html>
   );
 }
+
+// Declare the gtag function globally to prevent TypeScript errors
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
+export function initializeGoogleAnalytics(trackingId: string): void {
+  // Ensure `dataLayer` is initialized
+  window.dataLayer = window.dataLayer || [];
+  
+  // Define the `gtag` function
+  window.gtag = function () {
+    window.dataLayer.push(arguments);
+  };
+
+  // Load the gtag.js script asynchronously
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+  document.head.appendChild(script);
+
+  // Initialize gtag with the provided tracking ID
+  window.gtag('js', new Date());
+  window.gtag('config', trackingId);
+}
+
+// Call the function to initialize Google Analytics
+initializeGoogleAnalytics('G-ZZDL47J2LN');
+
