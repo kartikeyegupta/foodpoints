@@ -14,9 +14,9 @@ const PLANS = {
   "Plan C": { total: 3918.38, daily: 34.99 },
   "Plan D": { total: 4205.40, daily: 37.55 },
   "Plan E": { total: 4587.03, daily: 40.96 },
-  "Plan F": { total: 967.50, daily: 12.09 },
-  "Plan I": { total: 1016.95, daily: 12.71 },
-  "Plan J": { total: 2088.73, daily: 18.65 },
+  "Plan F (Commuter)": { total: 967.50, daily: 12.09 },
+  "Plan I (First Year)": { total: 1016.95, daily: 12.71 },
+  "Plan J (Swift)": { total: 2088.73, daily: 18.65 },
 }
 
 export default function FoodPointsCalculator() {
