@@ -21,7 +21,7 @@ const PLANS = {
 export default function FoodPointsCalculator() {
   const [selectedPlan, setSelectedPlan] = useState<keyof typeof PLANS | "">("")
   const [currentBalance, setCurrentBalance] = useState("")
-  const [leavingDate, setLeavingDate] = useState("")
+  const [leavingDate, setLeavingDate] = useState("12/16/2024")
   const [result, setResult] = useState({
     difference: 0,
     dailyTarget: 0,
