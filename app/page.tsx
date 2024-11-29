@@ -31,7 +31,8 @@ export default function FoodPointsCalculator() {
     isAhead: false,
     isAheadByHundred: false,
     remainingDays: 0,
-    adjustedDailyTarget: 0,
+    daysInTwoWeeks: 14,
+    realDaily: 0,
   })
 
   const calculatePoints = () => {
@@ -50,7 +51,6 @@ export default function FoodPointsCalculator() {
     const daysInTwoWeeks = Math.min(14, remainingDays)
     const twoWeekEnd = (expectedBalance - (realDaily * daysInTwoWeeks))
     const twoWeekTarget = (actualBalance - twoWeekEnd) / daysInTwoWeeks
-    const adjustedDailyTarget = (actualBalance - 0) / remainingDays
 
     setResult({
       difference: Math.abs(difference),
@@ -60,7 +60,8 @@ export default function FoodPointsCalculator() {
       isAhead: difference > 0,
       isAheadByHundred: difference > 100,
       remainingDays: remainingDays,
-      adjustedDailyTarget: adjustedDailyTarget,
+      daysInTwoWeeks: daysInTwoWeeks,
+      realDaily: realDaily,
     })
   }
 
@@ -75,84 +76,92 @@ export default function FoodPointsCalculator() {
     } else {
       message = "You can spend this amount per day for the next week:";
     }
-  } else {
+  } else if (result.daysInTwoWeeks != 14) {
     message = "You can only spend this amount per day until you leave to catch up:";
+  } else {
+    message = "You can only spend this amount per day for the next two weeks to catch up:";
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
-      <CardHeader className="space-y-1">
-        <div className="flex items-center space-x-2">
-          <Calculator className="w-6 h-6 text-sky-600" />
-          <CardTitle className="text-2xl font-bold text-sky-600">Duke Food Points Calculator</CardTitle>
-        </div>
-        <CardDescription>
-          Calculate your food points balance and daily spending target
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="plan">Select Your Plan</Label>
-          <Select
-            value={selectedPlan}
-            onValueChange={(value) => setSelectedPlan(value as keyof typeof PLANS)}
-          >
-            <SelectTrigger id="plan">
-              <SelectValue placeholder="Choose your dining plan" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.keys(PLANS).map((plan) => (
-                <SelectItem key={plan} value={plan}>
-                  {plan}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <>
+      <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
+        <CardHeader className="space-y-1">
+          <div className="flex items-center space-x-2">
+            <Calculator className="w-6 h-6 text-sky-600" />
+            <CardTitle className="text-2xl font-bold text-sky-600">Duke Food Points Calculator</CardTitle>
+          </div>
+          <CardDescription>
+            Calculate your food points balance and daily spending target
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="plan">Select Your Plan</Label>
+            <Select
+              value={selectedPlan}
+              onValueChange={(value) => setSelectedPlan(value as keyof typeof PLANS)}
+            >
+              <SelectTrigger id="plan">
+                <SelectValue placeholder="Choose your dining plan" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(PLANS).map((plan) => (
+                  <SelectItem key={plan} value={plan}>
+                    {plan}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="balance">Current Balance</Label>
-          <Input
-            id="balance"
-            type="number"
-            placeholder="Enter your current balance"
-            value={currentBalance}
-            onChange={(e) => setCurrentBalance(e.target.value)}
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="balance">Current Balance</Label>
+            <Input
+              id="balance"
+              type="number"
+              placeholder="Enter your current balance"
+              value={currentBalance}
+              onChange={(e) => setCurrentBalance(e.target.value)}
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="leavingDate">Date Leaving Duke</Label>
-          <Input
-            id="leavingDate"
-            type="date"
-            placeholder="Select your leaving date (12/16 by default)"
-            value={leavingDate}
-            onChange={(e) => setLeavingDate(e.target.value)}
-            min="2024-08-26"
-            max="2024-12-31"
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="leavingDate">Date Leaving Duke</Label>
+            <Input
+              id="leavingDate"
+              type="date"
+              placeholder="Select your leaving date (12/16 by default)"
+              value={leavingDate}
+              onChange={(e) => setLeavingDate(e.target.value)}
+              min="2024-08-26"
+              max="2024-12-31"
+            />
+          </div>
 
-        {selectedPlan && currentBalance && leavingDate && (
-            <>
-                <div className="mt-6 p-4 rounded-lg bg-sky-100 space-y-2">
-                    <p className="font-medium text-sky-900">
-                    You are {result.isAhead ? "ahead" : "behind"} by:{" "}
-                    <span className="font-bold">${result.difference.toFixed(2)}</span>
-                    </p>
-                    <p className="text-sky-800">{message}</p>
-                    <p className="text-2xl font-bold text-sky-600">
-                    ${result.isAhead ? (result.isAheadByHundred ? ((parseFloat(currentBalance) / result.remainingDays).toFixed(2)) : result.dailyTarget.toFixed(2)) : ((parseFloat(currentBalance) / result.remainingDays).toFixed(2))}/day
-                    </p>
-                    <p className="text-sm text-sky-700">
-                    Remaining days: {result.remainingDays}
-                    </p>
-                </div>
-                <PointsChart selectedPlan={selectedPlan} />
-            </>
-        )}
-      </CardContent>
-    </Card>
+          {selectedPlan && currentBalance && leavingDate && (
+              <>
+                  <div className="mt-6 p-4 rounded-lg bg-sky-100 space-y-2">
+                      <p className="font-medium text-sky-900">
+                      You are {result.isAhead ? "ahead" : "behind"} by:{" "}
+                      <span className="font-bold">${result.difference.toFixed(2)}</span>
+                      </p>
+                      <p className="text-sky-800">{message}</p>
+                      <p className="text-2xl font-bold text-sky-600">
+                      ${result.isAhead ? (result.isAheadByHundred ? result.hundredTarget.toFixed(2) : result.dailyTarget.toFixed(2)) : result.twoWeekTarget.toFixed(2)}/day
+                      </p>
+                      <p className="text-sm text-sky-700">
+                      Remaining days: {result.remainingDays}
+                      </p>
+                      <p className="text-sm text-sky-700">
+                      Usual Daily Allowance: {result.realDaily.toFixed(2)} (${result.isAhead ? (result.isAheadByHundred ? (result.hundredTarget - result.realDaily).toFixed(2) : (result.dailyTarget - result.realDaily).toFixed(2)) : (result.twoWeekTarget - result.realDaily).toFixed(2)}/day)
+                      </p>
+                  </div>
+                  <PointsChart selectedPlan={selectedPlan} />
+              </>
+          )}
+        </CardContent>
+      </Card>
+      <p className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white text-xs">  Developed by Kartikeye (Tiki) Gupta </p>
+    </>
   )
 }
