@@ -41,8 +41,9 @@ export default function FoodPointsCalcnulator() {
       const actualBalance = parseFloat(currentBalance)
       const difference = actualBalance - expectedBalance
       const daysInTwoWeeks = 14
-      const twoWeekTarget = Math.max((PLANS[selectedPlan].daily - (difference / daysInTwoWeeks)), 0)
-  
+      const twoWeekEnd = (expectedBalance - (PLANS[selectedPlan].daily * daysInTwoWeeks))
+      const twoWeekTarget = (actualBalance - twoWeekEnd) / 14
+
       setResult({
         difference: Math.abs(difference),
         dailyTarget: Math.abs(difference) / 7,
@@ -50,7 +51,7 @@ export default function FoodPointsCalcnulator() {
         isAhead: difference > 0,
       })
     }
-  
+  447.88
     useEffect(() => {
       calculatePoints()
     }, [selectedPlan, currentBalance])
