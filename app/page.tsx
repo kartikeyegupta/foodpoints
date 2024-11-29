@@ -125,7 +125,7 @@ export default function FoodPointsCalculator() {
           <Input
             id="leavingDate"
             type="date"
-            placeholder="Select your leaving date"
+            placeholder="Select your leaving date (12/16 by default)"
             value={leavingDate}
             onChange={(e) => setLeavingDate(e.target.value)}
             min="2024-08-26"
