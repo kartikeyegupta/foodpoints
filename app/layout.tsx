@@ -14,7 +14,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID
 export const metadata: Metadata = {
   title: "Duke Food Points Calculator",
   description: "An easier way for Duke Students to see how ahead or behind they are in food points. Created by Kartikeye (Tiki) Gupta.",
@@ -32,7 +31,7 @@ export default function RootLayout({
       >
         {children}
       </body>
-      <GoogleAnalytics gaId="GA_MEASUREMENT_ID" />
+      <GoogleAnalytics gaId="G-ZZDL47J2LN"/>
     </html>
   );
 }
