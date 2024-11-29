@@ -24,8 +24,10 @@ export default function FoodPointsCalcnulator() {
     const [result, setResult] = useState({
       difference: 0,
       dailyTarget: 0,
+      hundredTarget: 0,
       twoWeekTarget: 0,
       isAhead: false,
+      isAheadByHundred: false,
     })
   
     const calculatePoints = () => {
@@ -46,8 +48,10 @@ export default function FoodPointsCalcnulator() {
       setResult({
         difference: Math.abs(difference),
         dailyTarget: Math.abs(difference) / 7,
+        hundredTarget: Math.abs(difference) / 14,
         twoWeekTarget: Math.max(0, twoWeekTarget),
         isAhead: difference > 0,
+        isAheadByHundred: difference > 100,
       })
     }
   447.88
@@ -104,16 +108,22 @@ export default function FoodPointsCalcnulator() {
               <span className="font-bold">${result.difference.toFixed(2)}</span>
             </p>
             {result.isAhead ? (
-              <p className="text-sky-800">
-                You can spend extra per day for the next week:
-              </p>
+                result.isAheadByHundred ? (
+                    <p className="text-sky-800">
+                    You can spend extra per day for the next two weeks:
+                  </p>
+                ) : (
+                <p className="text-sky-800">
+                    You can spend extra per day for the next week:
+                </p>
+                )
             ) : (
               <p className="text-sky-800">
                 You can only spend this amount per day for the next 2 weeks to catch up:
               </p>
             )}
             <p className="text-2xl font-bold text-sky-600">
-              ${result.isAhead ? result.dailyTarget.toFixed(2) : result.twoWeekTarget.toFixed(2)}/day
+              ${result.isAhead ? (result.isAheadByHundred ? result.hundredTarget.toFixed(2) : result.dailyTarget.toFixed(2)) : result.twoWeekTarget.toFixed(2)}/day
             </p>
           </div>
         )}
