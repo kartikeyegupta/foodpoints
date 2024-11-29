@@ -161,7 +161,8 @@ export default function FoodPointsCalculator() {
           )}
         </CardContent>
       </Card>
-      <p className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white text-xs">  Developed by Kartikeye (Tiki) Gupta </p>
+      <p className="w-full max-w-md mx-auto text-xs">  Developed by Kartikeye (Tiki) Gupta </p>
+      <p className="w-full max-w-md mx-auto text-xs text-sky-800"> <a href="http://www.github.com/kartikeyegupta">GitHub</a> | <a href="mailto:kartikeye.gupta@duke.edu">Email</a> </p>
     </>
   )
 }
