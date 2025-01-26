@@ -100,6 +100,9 @@ export default function FoodPointsCalculator() {
 
   return (
     <>
+      <div className="w-full max-w-md mx-auto p-4 bg-blue-600 text-white font-bold rounded-lg mb-4 text-center">
+        I am waiting for Duke to update the charts, as soon as they do I will fix the calculator! - Tiki (01/26/2025)
+      </div>
       <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
         <CardHeader className="space-y-1">
           <div className="flex items-center space-x-2">
