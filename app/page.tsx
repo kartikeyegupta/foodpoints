@@ -22,12 +22,13 @@ const PLANS = {
 export default function FoodPointsCalculator() {
   const [selectedPlan, setSelectedPlan] = useState<keyof typeof PLANS | "">("")
   const [currentBalance, setCurrentBalance] = useState("")
-  const [leavingDate, setLeavingDate] = useState("04/28/2024")
+  const [leavingDate, setLeavingDate] = useState("2025-04-28")
   const [result, setResult] = useState({
     difference: 0,
     dailyTarget: 0,
     hundredTarget: 0,
     twoWeekTarget: 0,
+    untilLeaveTarget: 0,
     isAhead: false,
     isAheadByHundred: false,
     remainingDays: 0,
@@ -40,7 +41,7 @@ export default function FoodPointsCalculator() {
     if (!selectedPlan || !currentBalance || !leavingDate) return
     
     const today = new Date()
-    const startDate = new Date('2024-08-26')
+    const startDate = new Date('2025-01-06')
     const endDate = new Date(leavingDate)
     const daysFromStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
     const totalDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
@@ -61,26 +62,20 @@ export default function FoodPointsCalculator() {
       dailySpend = (difference / spendingDays) + realDaily
     }
 
-    // If we've hit the remaining days limit, use that for final calculation
-    if (spendingDays === remainingDays) {
-      dailySpend = (difference / spendingDays) + realDaily
-    }
-
-    const daysInAWeek = Math.min(7, remainingDays)
-    const daysInTwoWeeks = spendingDays // Use our calculated optimal period
-    const twoWeekEnd = (expectedBalance - (realDaily * daysInTwoWeeks))
-    const twoWeekTarget = (actualBalance - twoWeekEnd) / daysInTwoWeeks
+    // Calculate the "until you leave" option
+    const untilLeaveTarget = (actualBalance / remainingDays)
 
     setResult({
       difference: Math.abs(difference),
-      dailyTarget: Math.abs(difference) / daysInAWeek + realDaily,
-      hundredTarget: Math.abs(difference) / daysInTwoWeeks + realDaily,
-      twoWeekTarget: Math.max(0, twoWeekTarget),
+      dailyTarget: Math.abs(difference) / spendingDays + realDaily,
+      hundredTarget: Math.abs(difference) / spendingDays + realDaily,
+      twoWeekTarget: dailySpend,
+      untilLeaveTarget: untilLeaveTarget,
       isAhead: difference > 0,
       isAheadByHundred: difference > 100,
       remainingDays: remainingDays,
-      daysInTwoWeeks: daysInTwoWeeks,
-      daysInAWeek: daysInAWeek,
+      daysInTwoWeeks: spendingDays,
+      daysInAWeek: Math.min(7, remainingDays),
       realDaily: realDaily,
     })
   }
@@ -92,19 +87,9 @@ export default function FoodPointsCalculator() {
   let message;
   if (result.isAhead) {
     const weeks = Math.floor(result.daysInTwoWeeks/7);
-    if (result.daysInTwoWeeks === result.remainingDays) {
-      message = "You can spend this amount per day until you leave:";
-    } else if (weeks === 1) {
-      message = "You can spend this amount per day for the next week:";
-    } else {
-      message = `You can spend this amount per day for the next ${weeks} weeks:`;
-    }
+    message = `You can spend this amount per day for the next ${weeks} weeks:`;
   } else {
-    if (result.daysInTwoWeeks === result.remainingDays) {
-      message = "You need to spend this amount per day until you leave to catch up:";
-    } else {
-      message = `You need to spend this amount per day for the next ${Math.floor(result.daysInTwoWeeks/7)} weeks to catch up:`;
-    }
+    message = `You need to spend this amount per day for the next ${Math.floor(result.daysInTwoWeeks/7)} weeks to catch up:`;
   }
 
   return (
@@ -154,11 +139,11 @@ export default function FoodPointsCalculator() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="leavingDate">Date Leaving Duke</Label>
+            <Label htmlFor="leavingDate">Date Leaving Duke (04/28 by default)</Label>
             <Input
               id="leavingDate"
               type="date"
-              placeholder="Select your leaving date (04/28 by default)"
+              placeholder="04/28/2025"
               value={leavingDate}
               onChange={(e) => setLeavingDate(e.target.value)}
               min="2025-01-06"
@@ -175,13 +160,23 @@ export default function FoodPointsCalculator() {
                       </p>
                       <p className="text-sky-800">{message}</p>
                       <p className="text-2xl font-bold text-sky-600">
-                      ${result.isAhead ? (result.isAheadByHundred ? result.hundredTarget.toFixed(2) : result.dailyTarget.toFixed(2)) : result.twoWeekTarget.toFixed(2)}/day
+                      ${result.twoWeekTarget.toFixed(2)}/day
                       </p>
+                      <p className="text-sm text-sky-700">
+                      Usual Daily Allowance: ${result.realDaily.toFixed(2)} (+${(result.twoWeekTarget - result.realDaily).toFixed(2)}/day)
+                      </p>
+                      <div className="mt-4 pt-2">
+                        <p className="text-sky-800 text-xl font-bold">OR</p>
+                        <p className="text-sky-800 mt-2">You can spend this amount per day until you leave:</p>
+                        <p className="text-2xl font-bold text-sky-600">
+                          ${result.untilLeaveTarget.toFixed(2)}/day
+                        </p>
+                        <p className="text-sm text-sky-700">
+                          Usual Daily Allowance: ${result.realDaily.toFixed(2)} (+${(result.untilLeaveTarget - result.realDaily).toFixed(2)}/day)
+                        </p>
+                      </div>
                       <p className="text-sm text-sky-700">
                       Remaining days: {result.remainingDays}
-                      </p>
-                      <p className="text-sm text-sky-700">
-                      Usual Daily Allowance: {result.realDaily.toFixed(2)} (${result.isAhead ? (result.isAheadByHundred ? (result.hundredTarget - result.realDaily).toFixed(2) : (result.dailyTarget - result.realDaily).toFixed(2)) : (result.twoWeekTarget - result.realDaily).toFixed(2)}/day)
                       </p>
                   </div>
                   <PointsChart selectedPlan={selectedPlan} />
