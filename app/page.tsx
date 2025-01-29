@@ -49,8 +49,25 @@ export default function FoodPointsCalculator() {
     const expectedBalance = Math.max((PLANS[selectedPlan].total - (realDaily * daysFromStart)), 0)
     const actualBalance = parseFloat(currentBalance)
     const difference = actualBalance - expectedBalance
+    
+    // Calculate optimal spending period
+    let spendingDays = Math.min(14, remainingDays)
+    let dailySpend = (difference / spendingDays) + realDaily
+    
+    // Keep extending the period by 7 days if daily spend is over $50 or under $17.50
+    // and we haven't exceeded the remaining days
+    while ((dailySpend > 50 || dailySpend < 17.50) && spendingDays + 7 <= remainingDays) {
+      spendingDays += 7
+      dailySpend = (difference / spendingDays) + realDaily
+    }
+
+    // If we've hit the remaining days limit, use that for final calculation
+    if (spendingDays === remainingDays) {
+      dailySpend = (difference / spendingDays) + realDaily
+    }
+
     const daysInAWeek = Math.min(7, remainingDays)
-    const daysInTwoWeeks = Math.min(14, remainingDays)
+    const daysInTwoWeeks = spendingDays // Use our calculated optimal period
     const twoWeekEnd = (expectedBalance - (realDaily * daysInTwoWeeks))
     const twoWeekTarget = (actualBalance - twoWeekEnd) / daysInTwoWeeks
 
@@ -74,28 +91,20 @@ export default function FoodPointsCalculator() {
 
   let message;
   if (result.isAhead) {
-    if (result.daysInTwoWeeks != 14) {
-      if (result.isAheadByHundred) {
-        message = "You can spend this amount per day until you leave:";
-      } else {
-        if (result.daysInAWeek != 7) {
-          message = "You can spend this amount per day until you leave";
-        } else {
-          message = "You can spend this amount per day for the next week";
-        }
-      }
+    const weeks = Math.floor(result.daysInTwoWeeks/7);
+    if (result.daysInTwoWeeks === result.remainingDays) {
+      message = "You can spend this amount per day until you leave:";
+    } else if (weeks === 1) {
+      message = "You can spend this amount per day for the next week:";
     } else {
-      if (result.isAheadByHundred) {
-        message = "You can spend this amount per day for the next two weeks:";
-      } else {
-        message = "You can spend this amount per day for the next week:";
-      }
+      message = `You can spend this amount per day for the next ${weeks} weeks:`;
     }
-    
-  } else if (result.daysInTwoWeeks != 14) {
-    message = "You can only spend this amount per day until you leave to catch up:";
   } else {
-    message = "You can only spend this amount per day for the next two weeks to catch up:";
+    if (result.daysInTwoWeeks === result.remainingDays) {
+      message = "You need to spend this amount per day until you leave to catch up:";
+    } else {
+      message = `You need to spend this amount per day for the next ${Math.floor(result.daysInTwoWeeks/7)} weeks to catch up:`;
+    }
   }
 
   return (
