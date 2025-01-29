@@ -16,10 +16,10 @@ const WEEKLY_DATA = {
 }
 
 const WEEKS = [
-  "Aug 26", "Sep 2", "Sep 9", "Sep 16", "Sep 23", "Sep 30",
-  "Oct 7", "Oct 14", "Oct 21", "Oct 28",
-  "Nov 4", "Nov 11", "Nov 18", "Nov 25",
-  "Dec 2", "Dec 9", "Dec 16"
+  "Jan 6", "Jan 13", "Jan 20", "Jan 27", "Feb 3", "Feb 10",
+  "Feb 17", "Feb 24", "Mar 3", "Mar 10",
+  "Mar 17", "Mar 24", "Mar 31", "Apr 7",
+  "Apr 14", "Apr 21", "Apr 28"
 ]
 
 interface PointsChartProps {
@@ -31,7 +31,7 @@ export function PointsChart({ selectedPlan }: PointsChartProps) {
 
   const getCurrentWeekIndex = () => {
     const today = new Date()
-    const startDate = new Date('2024-08-26')
+    const startDate = new Date('2025-01-06')
     const weeksPassed = Math.floor((today.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000))
     return Math.min(Math.max(0, weeksPassed), WEEKS.length - 1)
   }

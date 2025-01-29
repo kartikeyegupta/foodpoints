@@ -22,7 +22,7 @@ const PLANS = {
 export default function FoodPointsCalculator() {
   const [selectedPlan, setSelectedPlan] = useState<keyof typeof PLANS | "">("")
   const [currentBalance, setCurrentBalance] = useState("")
-  const [leavingDate, setLeavingDate] = useState("12/16/2024")
+  const [leavingDate, setLeavingDate] = useState("04/28/2024")
   const [result, setResult] = useState({
     difference: 0,
     dailyTarget: 0,
@@ -101,7 +101,7 @@ export default function FoodPointsCalculator() {
   return (
     <>
       <div className="w-full max-w-md mx-auto p-4 bg-blue-600 text-white font-bold rounded-lg mb-4 text-center">
-        I am waiting for Duke to update the charts, as soon as they do I will fix the calculator! - Tiki (01/26/2025)
+        Updated for Spring 25 😄 - Tiki (01/28/2025)
       </div>
       <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
         <CardHeader className="space-y-1">
@@ -149,11 +149,11 @@ export default function FoodPointsCalculator() {
             <Input
               id="leavingDate"
               type="date"
-              placeholder="Select your leaving date (12/16 by default)"
+              placeholder="Select your leaving date (04/28 by default)"
               value={leavingDate}
               onChange={(e) => setLeavingDate(e.target.value)}
-              min="2024-08-26"
-              max="2024-12-31"
+              min="2025-01-06"
+              max="2025-06-01"
             />
           </div>
 
