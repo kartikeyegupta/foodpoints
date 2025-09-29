@@ -9,20 +9,20 @@ import { Label } from "@/components/ui/label"
 import { PointsChart } from '@/components/ui/points_chart'
 
 const PLANS = {
-  "Plan A": { total: 2953.03, daily: 26.37 },
-  "Plan B": { total: 3538.90, daily: 31.60 },
-  "Plan C": { total: 3918.38, daily: 34.99 },
-  "Plan D": { total: 4205.40, daily: 37.55 },
-  "Plan E": { total: 4587.03, daily: 40.96 },
-  "Plan F": { total: 967.50, daily: 12.09 },
-  "Plan I": { total: 1016.95, daily: 12.71 },
-  "Plan J": { total: 2088.73, daily: 18.65 },
+  "Plan A": { total: 3071.28, daily: 27.42 },
+  "Plan B": { total: 3680.80, daily: 32.86 },
+  "Plan C": { total: 4075.33, daily: 36.39 },
+  "Plan D": { total: 4373.10, daily: 39.05 },
+  "Plan E": { total: 4770.85, daily: 42.60 },
+  "Plan F": { total: 1006.20, daily: 12.58 },
+  "Plan I": { total: 1057.80, daily: 13.22 },
+  "Plan J": { total: 2172.58, daily: 19.40 },
 }
 
 export default function FoodPointsCalculator() {
   const [selectedPlan, setSelectedPlan] = useState<keyof typeof PLANS | "">("")
   const [currentBalance, setCurrentBalance] = useState("")
-  const [leavingDate, setLeavingDate] = useState("2025-04-28")
+  const [leavingDate, setLeavingDate] = useState("2025-12-15")
   const [result, setResult] = useState({
     difference: 0,
     dailyTarget: 0,
@@ -41,7 +41,7 @@ export default function FoodPointsCalculator() {
     if (!selectedPlan || !currentBalance || !leavingDate) return
     
     const today = new Date()
-    const startDate = new Date('2025-01-06')
+    const startDate = new Date('2025-08-25')  // Fall semester start
     const endDate = new Date(leavingDate)
     const daysFromStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
     const totalDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
@@ -95,7 +95,7 @@ export default function FoodPointsCalculator() {
   return (
     <>
       <div className="w-full max-w-md mx-auto p-4 bg-blue-600 text-white font-bold rounded-lg mb-4 text-center">
-        Updated for Spring 25 😄 - Tiki (01/28/2025)
+        Updated for Fall 25 😄 - Tiki (09/29/2025)
       </div>
       <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
         <CardHeader className="space-y-1">
@@ -139,15 +139,15 @@ export default function FoodPointsCalculator() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="leavingDate">Date Leaving Duke (04/28 by default)</Label>
+            <Label htmlFor="leavingDate">Date Leaving Duke (12/15 by default)</Label>
             <Input
               id="leavingDate"
               type="date"
-              placeholder="04/28/2025"
+              placeholder="12/15/2025"
               value={leavingDate}
               onChange={(e) => setLeavingDate(e.target.value)}
-              min="2025-01-06"
-              max="2025-06-01"
+              min="2025-08-25"
+              max="2025-12-31"
             />
           </div>
 
