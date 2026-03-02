@@ -147,7 +147,7 @@ export default function FoodPointsCalculator() {
               value={leavingDate}
               onChange={(e) => setLeavingDate(e.target.value)}
               min="2026-01-05"
-              max="2026-04-27"
+              max="2026-12-31"
             />
           </div>
 
