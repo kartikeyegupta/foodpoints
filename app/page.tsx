@@ -22,7 +22,7 @@ const PLANS = {
 export default function FoodPointsCalculator() {
   const [selectedPlan, setSelectedPlan] = useState<keyof typeof PLANS | "">("")
   const [currentBalance, setCurrentBalance] = useState("")
-  const [leavingDate, setLeavingDate] = useState("2026-04-27")
+  const [leavingDate, setLeavingDate] = useState("2026-12-14")
   const [result, setResult] = useState({
     difference: 0,
     dailyTarget: 0,
@@ -41,7 +41,7 @@ export default function FoodPointsCalculator() {
     if (!selectedPlan || !currentBalance || !leavingDate) return
     
     const today = new Date()
-    const startDate = new Date('2026-01-05')  // Spring 2026 semester start
+    const startDate = new Date('2026-08-24')  // Fall 2026 semester start
     const endDate = new Date(leavingDate)
     const daysFromStart = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
     const totalDays = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
@@ -95,7 +95,7 @@ export default function FoodPointsCalculator() {
   return (
     <>
       <div className="w-full max-w-md mx-auto p-4 bg-blue-600 text-white font-bold rounded-lg mb-4 text-center">
-        Updated for Spring 2026 😄 - Tiki (02/13/26)
+        Updated for Fall 2026 😄 - Tiki (08/27/26)
       </div>
       <Card className="w-full max-w-md mx-auto bg-gradient-to-b from-sky-50 to-white">
         <CardHeader className="space-y-1">
@@ -139,14 +139,14 @@ export default function FoodPointsCalculator() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="leavingDate">Date Leaving Duke (4/27 by default)</Label>
+            <Label htmlFor="leavingDate">Date Leaving Duke (12/14 by default)</Label>
             <Input
               id="leavingDate"
               type="date"
-              placeholder="4/27/2026"
+              placeholder="12/14/2026"
               value={leavingDate}
               onChange={(e) => setLeavingDate(e.target.value)}
-              min="2026-01-05"
+              min="2026-08-24"
               max="2026-12-31"
             />
           </div>

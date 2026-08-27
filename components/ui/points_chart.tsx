@@ -3,9 +3,9 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-// Weekly data points for each plan - Spring 2026 semester (Jan 5 - Apr 27)
+// Weekly data points for each plan - Fall 2026 semester (Aug 24 - Dec 14)
 const WEEKLY_DATA = {
-  "Plan A": [3071.28, 2879.32, 2687.36, 2495.40, 2303.44, 2111.48, 1919.52, 1727.56, 1535.60, 1343.64, 1151.68, 959.72, 767.76, 575.80, 383.84, 191.88, 0.00],
+  "Plan A": [3071.28, 2879.33, 2687.37, 2495.42, 2303.46, 2111.51, 1919.55, 1727.60, 1535.64, 1343.69, 1151.73, 959.78, 767.82, 575.87, 383.91, 191.96, 0.00],
   "Plan B": [3680.80, 3450.75, 3220.70, 2990.65, 2760.60, 2530.55, 2300.50, 2070.45, 1840.40, 1610.35, 1380.30, 1150.25, 920.20, 690.15, 460.10, 230.05, 0.00],
   "Plan C": [4075.33, 3820.62, 3565.91, 3311.21, 3056.50, 2801.79, 2547.08, 2292.37, 2037.67, 1782.96, 1528.25, 1273.54, 1018.83, 764.12, 509.42, 254.71, 0.00],
   "Plan D": [4373.10, 4099.78, 3826.46, 3553.14, 3279.82, 3006.51, 2733.19, 2459.87, 2186.55, 1913.23, 1639.91, 1366.59, 1093.27, 819.95, 546.64, 273.32, 0.00],
@@ -16,10 +16,10 @@ const WEEKLY_DATA = {
 }
 
 const WEEKS = [
-  "Jan 5", "Jan 12", "Jan 19", "Jan 26",
-  "Feb 2", "Feb 9", "Feb 16", "Feb 23",
-  "Mar 2", "Mar 9", "Mar 16", "Mar 23", "Mar 30",
-  "Apr 6", "Apr 13", "Apr 20", "Apr 27"
+  "Aug 24", "Aug 31", "Sep 7", "Sep 14",
+  "Sep 21", "Sep 28", "Oct 5", "Oct 12",
+  "Oct 19", "Oct 26", "Nov 2", "Nov 9", "Nov 16",
+  "Nov 23", "Nov 30", "Dec 7", "Dec 14"
 ]
 
 interface PointsChartProps {
@@ -31,7 +31,7 @@ export function PointsChart({ selectedPlan }: PointsChartProps) {
 
   const getCurrentWeekIndex = () => {
     const today = new Date()
-    const startDate = new Date('2026-01-05')  // Spring 2026 semester start
+    const startDate = new Date('2026-08-24')  // Fall 2026 semester start
     const weeksPassed = Math.floor((today.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000))
     return Math.min(Math.max(0, weeksPassed), WEEKS.length - 1)
   }
